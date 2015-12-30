@@ -5,7 +5,8 @@ using NLapack.Numbers;
 
 namespace NLapack.Matrices
 {
-    public class NRealMatrix : IMatrix<NDouble>
+
+    public class NRealMatrix : IMatrix<NDouble>, IDisposable
     {
         private readonly MCJRMatrix _mat;
 
@@ -17,6 +18,17 @@ namespace NLapack.Matrices
         public NRealMatrix()
         {
             _mat = new MCJRMatrix();
+        }
+
+        void IDisposable.Dispose()
+        {
+            _mat.destroy();
+        }
+
+        ~NRealMatrix()
+        {
+            if (_mat != null)
+                _mat.destroy();
         }
 
         public NRealMatrix(int rows, int cols)
@@ -102,12 +114,23 @@ namespace NLapack.Matrices
 
         public NDouble[][] ToArray()
         {
-            throw new NotImplementedException();
+            NDouble[][] array = new NDouble[_mat.rows()][];
+            for (int idxRow = 0; idxRow < _mat.rows(); idxRow++)
+            {
+                array[idxRow] = new NDouble[_mat.cols()];
+                for (int idxCol = 0; idxCol < _mat.cols(); idxCol++)
+                    array[idxRow][idxCol] = new NDouble(_mat.getAt(idxRow, idxCol));
+            }
+            return array;
         }
 
         public void SetArray(NDouble[][] data)
         {
-            throw new NotImplementedException();
+            for (int idxRow = 0; idxRow < _mat.rows(); idxRow++)
+            {
+                for (int idxCol = 0; idxCol < _mat.cols(); idxCol++)
+                    _mat.setAt(idxRow, idxCol, data[idxRow][idxCol]._value);
+            }
         }
 
         public NDouble[] GetRowArray(int r)

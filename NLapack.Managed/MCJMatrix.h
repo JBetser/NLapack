@@ -78,7 +78,7 @@ namespace MLapack {
 			m_pCJRMatrix->zero();
 		}
 
-		void destory()
+		void destroy()
 		{
 			m_pCJRMatrix->destroy();
 		}
@@ -234,7 +234,7 @@ namespace MLapack {
 			m_pCJRMatrix->zero();
 		}
 
-		void destory()
+		void destroy()
 		{
 			m_pCJRMatrix->destroy();
 		}

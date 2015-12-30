@@ -29,6 +29,12 @@ struct SJMatrix
 	int rows;
 	int cols;
 	_T* data;
+	SJMatrix() : data(NULL) {}
+	~SJMatrix()
+	{
+		if (data != NULL)
+			delete [] data;
+	}
 };
 
 template<typename _T>
@@ -85,7 +91,7 @@ public:
 
 public:
 
-	CJMatrix(int e, int obj) 
+	CJMatrix(int e, int obj) : m(NULL)
 	{
             /*jclass cls = e->GetObjectClass(o);
             fid = e->GetFieldID(cls, "handle", "J");
@@ -169,11 +175,8 @@ public:
 
 	void destroy()
 	{
-		/*if (!m) return;
-		if (m->data) delete[] m->data;
-		delete m;
-                m=NULL;*/
-		//jni e->SetLongField(o, fid, 0);
+		if (m != NULL)
+			delete m;
 	};
 
 	int rows(){ return m?m->rows:0; }
